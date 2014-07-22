@@ -9,6 +9,7 @@
 
 <p>
     @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Bulk Load", "BulkLoad")
 </p>
 @using (Html.BeginForm("Index", "Student", FormMethod.Get))
 {
@@ -24,9 +25,6 @@
         </th>
         <th>
             First Name
-        </th>
-        <th>
-            @Html.ActionLink("Enrollment Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th></th>
     </tr>

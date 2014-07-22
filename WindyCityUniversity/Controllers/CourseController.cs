@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.IO;
+using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using WindyCityUniversity.DAL;
 using WindyCityUniversity.Models;
+using WindyCityUniversity.Service;
 
 namespace WindyCityUniversity.Controllers
 {
@@ -15,12 +20,12 @@ namespace WindyCityUniversity.Controllers
         // GET: /Course/
         public ActionResult Index()
         {
-            
-            return View();
+            var courses = db.Courses.ToList();
+            return View(courses);
         }
 
         // GET: /Course/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(Guid? id)
         {
             if (id == null)
             {
@@ -143,6 +148,45 @@ namespace WindyCityUniversity.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult BulkLoad()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadCoursesFile()
+        {
+            if (Request.Files.Count > 0)
+            {
+                var courses = new List<Course>();
+                
+                HttpPostedFileBase file = Request.Files[0];
+
+                var reader = new StreamReader(file.InputStream);
+                do
+                {
+                    string line = reader.ReadLine();
+                    var values = line.Split('|');
+
+                    if (values.Count() == 2)
+                    {
+                        var course = new Course { Code = values[0], Name = values[1] };
+
+                        courses.Add(course);    
+                    }
+                    
+                } while (reader.Peek() != -1);
+                
+                reader.Close();
+
+                var _bulkLoadService = new BulkLoadService();
+
+                _bulkLoadService.Load(courses);
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

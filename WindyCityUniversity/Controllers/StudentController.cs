@@ -1,18 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using WindyCityUniversity.DAL;
 using WindyCityUniversity.Models;
+using WindyCityUniversity.Service;
 
 namespace WindyCityUniversity.Controllers
 {
     public class StudentController : Controller
     {
         private SchoolContext db = new SchoolContext();
+        private List<Course> validCourses = new List<Course>();
 
         // GET: /Student/
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -49,7 +55,7 @@ namespace WindyCityUniversity.Controllers
                     break;
             }
 
-            int pageSize = 3;
+            int pageSize = 20;
             int pageNumber = (page ?? 1);
             return View(students.ToPagedList(pageNumber, pageSize));
         }
@@ -100,7 +106,7 @@ namespace WindyCityUniversity.Controllers
         }
 
         // GET: /Student/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(Guid? id)
         {
             if (id == null)
             {
@@ -184,6 +190,92 @@ namespace WindyCityUniversity.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult BulkLoad()
+        {
+            var students = new List<Student>();
+            var _bulkLoadService = new BulkLoadService();
+
+            _bulkLoadService.Load(students);
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadStudentsFile()
+        {
+            if (Request.Files.Count > 0)
+            {
+                var students = new List<Student>();
+                
+                validCourses = db.Courses.ToList();
+
+                HttpPostedFileBase file = Request.Files[0];
+
+                var reader = new StreamReader(file.InputStream);
+                do
+                {
+                    string line = reader.ReadLine();
+                    var studentInfo = line.Split('|');
+
+                    if (studentInfo.Count() == 4)
+                    {
+                        var student = new Student
+                        {
+                            ExternalId = int.Parse(studentInfo[0]),
+                            FirstName = studentInfo[1],
+                            LastName = studentInfo[2]
+                        };
+                        
+                        var enrollementInfo = studentInfo[3].Split(',');
+                        if (enrollementInfo.Length > 0)
+                        {
+                            student.Enrollments = new List<Enrollment>();
+
+                            foreach (var enrollementItem in enrollementInfo)
+                            {
+                                var enrollement = PraseEnrollement(enrollementItem);
+                                if (enrollement != null)
+                                {
+                                    student.Enrollments.Add(enrollement);    
+                                }
+                            }
+                        }
+
+                        students.Add(student);
+                    }
+
+                } while (reader.Peek() != -1);
+
+                reader.Close();
+
+                var _bulkLoadService = new BulkLoadService();
+
+                _bulkLoadService.Load(students);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        private Enrollment PraseEnrollement(string enrollementString)
+        {
+            enrollementString = enrollementString.TrimEnd(')');
+
+            var values = enrollementString.Split('(');
+            Enrollment enrollement = null;
+            var course = validCourses.FirstOrDefault(c => c.Code == values[0]);
+
+            if (course != null)
+            {
+                enrollement = new Enrollment
+                {
+                    CourseId = course.Id,
+                    GPA = float.Parse(values[1])
+                };
+            }
+
+            return enrollement;
         }
     }
 }
