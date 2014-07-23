@@ -7,6 +7,13 @@ namespace WindyCityUniversity.Models
 {
     public class Student : BaseEntity
     {
+
+        public Student()
+        {
+            Enrollments = new List<Enrollment>();
+            Classmates = new List<Classmate>();
+        }
+
         // This is a reference field to the id field on the student data file. 
         // Did not use studentID as the name to prevent confusion with the actual PK
         // This is not the primary key since there were duplicates in the data file
@@ -33,5 +40,18 @@ namespace WindyCityUniversity.Models
         }
 
         public virtual List<Enrollment> Enrollments { get; set; }
+        
+        [NotMapped]
+        public List<Classmate> Classmates { get; set; }
+    }
+    
+    public class Classmate
+    {
+        public Classmate()
+        {
+            SharedCourses = new List<Course>();
+        }
+        public Student Student { get; set; }
+        public List<Course> SharedCourses { get; set; }
     }
 }

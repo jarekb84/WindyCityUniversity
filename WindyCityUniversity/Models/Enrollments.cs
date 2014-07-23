@@ -6,6 +6,7 @@ namespace WindyCityUniversity.Models
     public class Enrollment : BaseEntity
     {
         public Guid CourseId { get; set; }
+        public Guid StudentId { get; set; }
 
         public float GPA { get; set; }
         public virtual Course Course { get; set; }

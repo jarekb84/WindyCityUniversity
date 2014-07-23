@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Reports";
+}
+
+<h2>Reports</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            <tr>
+                <td>@Html.ActionLink("Shared Courses", "SharedCourses", "Report")</td>
+                <td>
+                    A report with an entry/record for each student that indicates which other students that particular student has 2 or more classes with.
+                </td>
+            </tr>
+    </tbody>
+</table>

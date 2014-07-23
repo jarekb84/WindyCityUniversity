@@ -3,6 +3,14 @@
 }
 
 <h2>Bulk Load Students</h2>
+<p>
+    Upload a file in the correct format to load student information and enrollment data. The each line of text in the file should look like this.
+</p>
+<pre>id|first_name|last_name|class_id(gpa),class_id(gpa),class_id(gpa),class_id(gpa)</pre>
+<p class="bg-warning">
+    Make sure to load course data first before loading enrollments.
+</p>
+
 @using (Html.BeginForm("UploadStudentsFile", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <input type="file" name="FileUpload" />

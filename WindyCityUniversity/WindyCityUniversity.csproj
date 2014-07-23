@@ -128,6 +128,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="DAL\SchoolContext.cs" />
     <Compile Include="DAL\SchoolInterceptorLogging.cs" />
@@ -140,6 +141,10 @@
     <Compile Include="Migrations\201407220615324_InitialSchema.cs" />
     <Compile Include="Migrations\201407220615324_InitialSchema.Designer.cs">
       <DependentUpon>201407220615324_InitialSchema.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407230318095_EnrollementIdExposed.cs" />
+    <Compile Include="Migrations\201407230318095_EnrollementIdExposed.Designer.cs">
+      <DependentUpon>201407230318095_EnrollementIdExposed.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseTypes\BaseEntity.cs" />
@@ -154,6 +159,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\site.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -191,6 +197,8 @@
     <Content Include="Views\Course\Index.cshtml" />
     <Content Include="Views\Course\BulkLoad.cshtml" />
     <Content Include="Views\Student\BulkLoad.cshtml" />
+    <Content Include="Views\Report\SharedCourses.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -201,6 +209,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201407220615324_InitialSchema.resx">
       <DependentUpon>201407220615324_InitialSchema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407230318095_EnrollementIdExposed.resx">
+      <DependentUpon>201407230318095_EnrollementIdExposed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

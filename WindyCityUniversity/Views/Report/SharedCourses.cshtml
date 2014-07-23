@@ -1,0 +1,41 @@
+﻿@using System.Net.Mime
+@model List<WindyCityUniversity.Models.Student>
+@{
+    ViewBag.Title = "SharedCourses";
+}
+
+<h2>SharedCourses</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Classmates</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.OrderByDescending(m => m.Classmates.Count))
+        {
+            <tr>
+                <td>@student.FullName</td>
+                <td>
+                    @foreach (var classmate in student.Classmates)
+                    {
+                        @classmate.Student.FullName
+                        
+                        var courses = new List<string>();
+                        foreach (var course in classmate.SharedCourses)
+                        {
+                            courses.Add(course.Code);
+                        }
+                        
+                        <text>
+                            (@string.Join(",", courses))
+                        </text>
+                        <br />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

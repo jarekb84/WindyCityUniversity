@@ -7,9 +7,23 @@
 </div>
 <div class="row">
     <div class="col-md-4">
-        <h2>Welcome to Windy City University</h2>
+        <h2>Courses</h2>
         <p>
-            Windy City University a simple applicatoin where you can upload course and student data then view reports using that data.
+            View, modify, or create courses for this university @Html.ActionLink("here", "Index", "Course"). You can also bulk load many courses at once @Html.ActionLink("here", "BulkLoad", "Course").
+        </p>
+    </div>
+    
+    <div class="col-md-4">
+        <h2>Students</h2>
+        <p>
+            View, modify, or create students enrolled at this university @Html.ActionLink("here", "Index", "Student"). You can also bulk load student information and enrollment @Html.ActionLink("here", "BulkLoad", "Student").
+        </p>
+    </div>
+    
+    <div class="col-md-4">
+        <h2>Reports</h2>
+        <p>
+            Want to know more about the interactions between students or other questions? Check out our @Html.ActionLink("reports", "Index", "Report") section to find the answer.
         </p>
     </div>
 </div>
