@@ -1,0 +1,17 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Course Bulk Load";
+}
+
+<h2>Bulk Load Courses</h2>
+
+<p>
+    Upload a file in the correct format to course data. The each line of text in the file should look like this.
+</p>
+<pre>class_id|class_name</pre>
+@using (Html.BeginForm("UploadCoursesFile", "Course", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="FileUpload" />
+    <input type="submit" name="Submit" id="Submit" value="Upload" />
+}

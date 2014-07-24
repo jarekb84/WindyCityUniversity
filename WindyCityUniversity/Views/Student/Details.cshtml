@@ -1,0 +1,64 @@
+﻿@model WindyCityUniversity.Models.Student
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Student</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ExternalId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExternalId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Enrollments)
+        </dt>
+        <dd class="row">
+            <div class="col-xs-6">
+                <table class="table">
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Grade</th>
+                    </tr>
+                    @foreach (var item in Model.Enrollments)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(item.Course.Name, "Details", "Course", new { id = item.Course.Id }, null)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GPA)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

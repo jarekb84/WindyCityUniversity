@@ -1,0 +1,46 @@
+﻿@using WindyCityUniversity.Models
+@model List<Student>
+@{
+    ViewBag.Title = "SharedCourses";
+    Layout = "~/Views/Shared/_PdfLayout.cshtml";
+}
+
+<h2>SharedCourses</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Student</th>
+            <th>Classmate Count</th>
+            <th>Classmates</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.OrderBy(m => m.LastName))
+        {
+            <tr>
+                <td>@student.ExternalId</td>
+                <td>@student.FullName</td>
+                <td>@student.Classmates.Count</td>
+                <td>
+                    @foreach (var classmate in student.Classmates)
+                    {
+                        @classmate.Student.FullName
+
+                        var courses = new List<string>();
+                        foreach (var course in classmate.SharedCourses)
+                        {
+                            courses.Add(course.Code);
+                        }
+                        <text>
+                            (@string.Join(",", courses))
+                        </text>
+
+                        <br />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
