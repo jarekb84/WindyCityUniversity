@@ -1,41 +1,75 @@
-﻿@using System.Net.Mime
-@model List<WindyCityUniversity.Models.Student>
+﻿@using PagedList.Mvc
+@using WindyCityUniversity.Models
+@model PagedList.IPagedList<Student>
 @{
     ViewBag.Title = "SharedCourses";
 }
 
-<h2>SharedCourses</h2>
+@functions{
+    public string CreateClassmateOutput(Student student, Classmate classmate)
+    {
+        var courses = new List<string>();
+        
+        foreach (var course in classmate.SharedCourses)
+        {
+            var classmateEnrollement = classmate.Student.Enrollments.First(e => e.CourseId == course.Id);
+            var studentEnrollement = student.Enrollments.First(e => e.CourseId == course.Id);
+            var gpaCompare = string.Format("<span class='sharedCourse'>{4}<div class='gpaCompare'>{0}'s GPA: {1}<br />{2}'s GPA: {3}</div></span>", 
+                student.FirstName, 
+                studentEnrollement.GPA, 
+                classmate.Student.FirstName, 
+                classmateEnrollement.GPA,
+                Html.ActionLink(course.Code, "Details", "Course", new { id = course.Id}, new { target = "_blank" })
+            );
+            courses.Add(gpaCompare);
+        }
 
-<table class="table">
+        return string.Format("{0} ({1})<br />",
+            Html.ActionLink(classmate.Student.FullName, "Details", "Student", new { @id = classmate.Student.Id }, new { target = "_blank" }),
+            string.Join(",", courses)
+        );
+    }
+}
+<h2>SharedCourses</h2>
+<p class="bg-info">
+    Click the plus icon to expand full list of classmates.
+    <br />
+    Hover over courses to see the student and classmate GPA's.
+    <br />
+    Click on the student name or course to go to the detail screen.
+</p>
+@Html.ActionLink("Export to PDF", "SharedCoursesPdf", "Report")
+<table class="table table-hover">
     <thead>
         <tr>
+            <th></th>
+            <th>Id</th>
             <th>Student</th>
+            <th>Classmate Count</th>
             <th>Classmates</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var student in Model.OrderByDescending(m => m.Classmates.Count))
+        @foreach (var student in Model.OrderBy(m => m.LastName))
         {
             <tr>
-                <td>@student.FullName</td>
+                <td><i class="fa fa-plus expandClassmates"></i></td>
+                <td>@student.ExternalId</td>
+                <td>@Html.ActionLink(student.FullName, "Details", "Student", new { id = student.Id}, new { target = "_blank" })</td>
+                <td>@student.Classmates.Count</td>
                 <td>
-                    @foreach (var classmate in student.Classmates)
-                    {
-                        @classmate.Student.FullName
-                        
-                        var courses = new List<string>();
-                        foreach (var course in classmate.SharedCourses)
+                    <div class="firstClassmate">@Html.Raw(CreateClassmateOutput(student, student.Classmates.OrderBy(c => c.Student.LastName).First()))</div>
+                    <div class="remainingClassmates">
+                        @foreach (var classmate in student.Classmates.OrderBy(c => c.Student.LastName).Skip(1))
                         {
-                            courses.Add(course.Code);
+                            @Html.Raw(CreateClassmateOutput(student, classmate))
                         }
-                        
-                        <text>
-                            (@string.Join(",", courses))
-                        </text>
-                        <br />
-                    }
+                    </div>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("SharedCourses", new { page }))

@@ -35,24 +35,26 @@
         <dt>
             @Html.DisplayNameFor(model => model.Enrollments)
         </dt>
-        <dd>
-            <table class="table">
-                <tr>
-                    <th>Course Name</th>
-                    <th>Grade</th>
-                </tr>
-                @foreach (var item in Model.Enrollments)
-                {
+        <dd class="row">
+            <div class="col-xs-6">
+                <table class="table">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.GPA)
-                        </td>
+                        <th>Course Name</th>
+                        <th>Grade</th>
                     </tr>
-                }
-            </table>
+                    @foreach (var item in Model.Enrollments)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(item.Course.Name, "Details", "Course", new { id = item.Course.Id }, null)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GPA)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
         </dd>
     </dl>
 </div>

@@ -24,6 +24,30 @@
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Enrollments)
+        </dt>
+        <dd class="row">
+            <div class="col-xs-4">
+                <table class="table">
+                    <tr>
+                        <th>Student</th>
+                        <th>GPA</th>
+                    </tr>
+                    @foreach (var enrollement in Model.Enrollments.OrderBy(e => e.Student.LastName))
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(enrollement.Student.FullName, "Details", "Student", new { id = enrollement.Student.Id }, null)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => enrollement.GPA)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </dd>
     </dl>
 </div>
 <p>

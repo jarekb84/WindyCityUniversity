@@ -9,6 +9,42 @@
     padding-right: 15px;
 }
 
-.bg-warning  {
+.bg-warning, .bg-info {
     padding: 15px;
+}
+
+.remainingClassmates {
+    display: none;
+}
+
+.expandClassmates {
+    cursor: pointer;
+}
+
+.sharedCourse { 
+    position: relative;
+}
+
+.gpaCompare {
+    opacity: 0;
+    position: absolute;
+    top: 20px;
+    background: #808080;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    height: 0px;
+    padding: 0 12px;
+    overflow: hidden;    
+    transition: all 500ms;
+    color: #fff;
+}
+
+
+.sharedCourse:hover .gpaCompare {
+    padding: 12px 12px;
+    height: auto;
+    min-width: 200px; 
+    opacity: 1;
+    border: 1px solid #eeeeee;
+    z-index: 2;
 }
