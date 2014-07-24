@@ -37,13 +37,13 @@
     overflow: hidden;    
     transition: all 500ms;
     color: #fff;
+    min-width: 200px; 
 }
 
 
 .sharedCourse:hover .gpaCompare {
     padding: 12px 12px;
     height: auto;
-    min-width: 200px; 
     opacity: 1;
     border: 1px solid #eeeeee;
     z-index: 2;

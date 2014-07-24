@@ -164,9 +164,7 @@
     <Compile Include="Models\Enrollments.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\BulkLoadService.cs" />
-    <Compile Include="ViewModels\AssignedCourseData.cs" />
-    <Compile Include="ViewModels\EnrollmentDateGroup.cs" />
+    <Compile Include="Service\BulkLoadService.cs" />    
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
