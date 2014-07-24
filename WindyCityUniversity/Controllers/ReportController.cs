@@ -18,7 +18,7 @@ namespace WindyCityUniversity.Controllers
         // GET: Report
         public ActionResult SharedCourses(int? page)
         {
-            var students = GetSharedStudents();
+            var students = GetSharedStudents().OrderBy(s => s.LastName);
            
             int pageSize = 15;
             int pageNumber = (page ?? 1);
